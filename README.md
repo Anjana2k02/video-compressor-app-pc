@@ -2,7 +2,9 @@
 
 Local-first Windows video preparation, built with C# / .NET 10, WinUI 3, and FFmpeg 8.
 
-Phase 1 is complete pending user acceptance. It covers import, metadata, preview, and trim selection. Export is reserved for Phase 2.
+Phases 1–3 are accepted (import/trim/preview, reliable social export, and smart acceleration with hardware encoders, HDR→SDR tone mapping, and a strategy explanation). Phase 4 adds the measured **Visually Lossless** optimizer (VMAF-driven CRF search to find the smallest visually-lossless file) plus release hardening — and is complete pending user acceptance.
+
+For packaging and release steps see [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md), [BENCHMARK.md](BENCHMARK.md), and [NOTICE.md](NOTICE.md). Build a self-contained folder with `powershell -File tools/publish.ps1`.
 
 See [the build contract](VIDEO_OPTIMIZER_GPT6_ASTRA.md) and [phase status](PHASE_STATUS.md).
 
@@ -31,7 +33,7 @@ dotnet build VideoOptimizer.slnx
 dotnet run --project src/VideoOptimizer.App/VideoOptimizer.App.csproj
 ```
 
-The app window opens with an import button and a drop zone. Import an MP4, MOV, MKV, or WebM to analyze, preview, and select a trim range.
+The app window opens with an import button and a drop zone. Import an MP4, MOV, MKV, or WebM to analyze, preview, and select a trim range, then choose a destination, quality, and framing and export an upload-ready MP4.
 
 ## Test
 

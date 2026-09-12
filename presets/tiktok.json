@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "tiktok",
+  "name": "TikTok",
+  "lastReviewed": "2026-09-12",
+  "notes": "Vertical 9:16. Platform limits can change; re-check before relying on compliance.",
+  "video": {
+    "preferredWidth": 1080,
+    "preferredHeight": 1920,
+    "aspectRatio": "9:16",
+    "codec": "h264",
+    "pixelFormat": "yuv420p"
+  },
+  "audio": { "codec": "aac", "sampleRate": 48000, "bitrate": 160000 },
+  "quality": { "smallCrf": 23, "recommendedCrf": 20, "maximumCrf": 17 },
+  "rules": { "preventUpscaling": true, "preserveSourceFps": true }
+}

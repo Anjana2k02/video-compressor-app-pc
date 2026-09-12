@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "whatsapp-status-hd",
+  "name": "WhatsApp Status (maximum 1080p)",
+  "lastReviewed": "2026-09-12",
+  "notes": "1080x1920 for WhatsApp's 'HD quality' sending option — enable HD in WhatsApp when sending or it will downscale this. Caps 30 fps and bitrate so WhatsApp's own compression stays light. Sending as a document skips WhatsApp compression entirely.",
+  "video": {
+    "preferredWidth": 1080,
+    "preferredHeight": 1920,
+    "aspectRatio": "9:16",
+    "codec": "h264",
+    "pixelFormat": "yuv420p",
+    "maxFps": 30,
+    "maxBitrate": 4000000
+  },
+  "audio": { "codec": "aac", "sampleRate": 48000, "bitrate": 128000 },
+  "quality": { "smallCrf": 23, "recommendedCrf": 20, "maximumCrf": 17 },
+  "rules": { "preventUpscaling": true, "preserveSourceFps": true }
+}

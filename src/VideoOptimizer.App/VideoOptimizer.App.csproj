@@ -16,5 +16,6 @@
     <ProjectReference Include="../VideoOptimizer.Core/VideoOptimizer.Core.csproj" />
     <ProjectReference Include="../VideoOptimizer.Media/VideoOptimizer.Media.csproj" />
     <Content Include="../../tools/ffmpeg/*" Link="tools/ffmpeg/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../../presets/*.json" Link="presets/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

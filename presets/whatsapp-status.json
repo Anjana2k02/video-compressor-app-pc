@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "whatsapp-status",
+  "name": "WhatsApp Status (optimized 720p)",
+  "lastReviewed": "2026-09-12",
+  "notes": "WhatsApp re-compresses uploads, so this preset caps 30 fps and bitrate to stay inside WhatsApp's limits — that way WhatsApp keeps more of the quality. Tip: turn on 'HD quality' when sending, or send the file as a document to skip WhatsApp's compression entirely.",
+  "video": {
+    "preferredWidth": 720,
+    "preferredHeight": 1280,
+    "aspectRatio": "9:16",
+    "codec": "h264",
+    "pixelFormat": "yuv420p",
+    "maxFps": 30,
+    "maxBitrate": 2000000
+  },
+  "audio": { "codec": "aac", "sampleRate": 48000, "bitrate": 128000 },
+  "quality": { "smallCrf": 23, "recommendedCrf": 20, "maximumCrf": 17 },
+  "rules": { "preventUpscaling": true, "preserveSourceFps": true }
+}

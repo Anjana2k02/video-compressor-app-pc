@@ -6,6 +6,7 @@ using Xunit;
 namespace VideoOptimizer.Tests;
 
 // These tests deliberately fail when the bundle is missing; setup is part of the build contract.
+[Collection("ffmpeg-integration")]
 public sealed class MediaIntegrationTests : IDisposable
 {
     private readonly string root = FindRoot();

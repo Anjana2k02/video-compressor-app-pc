@@ -26,8 +26,17 @@ public sealed partial class MainWindow : Window
     {
         InitializeComponent();
         AppWindow.Resize(new Windows.Graphics.SizeInt32(1100, 1000));
-        viewModel = new MainViewModel(new MediaService(new BundledToolLocator(AppContext.BaseDirectory),
-            new MediaProcessRunner(), new FfprobeParser()), new NativeVideoPicker(this), new FileAppLog());
+        var locator = new BundledToolLocator(AppContext.BaseDirectory);
+        var runner = new MediaProcessRunner();
+        var parser = new FfprobeParser();
+        var log = new FileAppLog();
+        var presets = PresetCatalog.LoadFromDirectory(Path.Combine(AppContext.BaseDirectory, "presets"));
+        var encoderProbe = new EncoderProbe(locator, runner);
+        var vmafProbe = new VmafProbe(locator, runner);
+        var optimizer = new VisuallyLosslessOptimizer(locator, runner, vmafProbe, new VmafMeasurer(runner), new MemoryAnalysisCache());
+        var exportService = new VideoExportService(locator, runner, parser, presets, encoderProbe, optimizer);
+        viewModel = new MainViewModel(new MediaService(locator, runner, parser), new NativeVideoPicker(this), log,
+            exportService, presets, new NativeOutputPicker(this), encoderProbe, vmafProbe);
         Root.DataContext = viewModel;
         Preview.SetMediaPlayer(player);
         player.MediaFailed += OnMediaFailed;
@@ -79,8 +88,16 @@ public sealed partial class MainWindow : Window
         RecentBox.SelectedItem = null;
         await viewModel.ImportAsync(selected.InputPath);
     }
+    private void UpdateExportPanels()
+    {
+        ProgressCard.Visibility = viewModel.IsExporting ? Visibility.Visible : Visibility.Collapsed;
+        CompletionCard.Visibility = viewModel.HasResult ? Visibility.Visible : Visibility.Collapsed;
+        ExportCard.Visibility = viewModel.HasResult ? Visibility.Collapsed : Visibility.Visible;
+    }
     private async void OnViewModelChanged(object? sender, PropertyChangedEventArgs e)
     {
+        if (e.PropertyName is nameof(MainViewModel.IsExporting) or nameof(MainViewModel.HasResult))
+            UpdateExportPanels();
         if (e.PropertyName != nameof(MainViewModel.Video) || viewModel.Video is not { } video) return;
         var generation = ++previewGeneration;
         selectionTimer.Stop();
@@ -132,5 +149,31 @@ public sealed partial class MainWindow : Window
             player.Pause();
             selectionTimer.Stop();
         }
+    }
+
+    // ---- Export (Phase 2) ----
+    private async void OnStartExport(object sender, RoutedEventArgs e) => await viewModel.ExportAsync();
+    private void OnCancelExport(object sender, RoutedEventArgs e) => viewModel.CancelExport();
+    private void OnExportErrorClosed(InfoBar sender, InfoBarClosedEventArgs args) => viewModel.DismissExportError();
+    private void OnExportAgain(object sender, RoutedEventArgs e) => viewModel.StartNewExport();
+    private async void OnPlayOutput(object sender, RoutedEventArgs e)
+    {
+        if (viewModel.ResultPath is not { } path) return;
+        try
+        {
+            var file = await StorageFile.GetFileFromPathAsync(path);
+            await Launcher.LaunchFileAsync(file);
+        }
+        catch (Exception ex) { if (!closed) viewModel.ReportError("The exported file could not be opened.", ex); }
+    }
+    private async void OnOpenFolder(object sender, RoutedEventArgs e)
+    {
+        if (viewModel.ResultPath is not { } path) return;
+        try
+        {
+            var folder = Path.GetDirectoryName(path);
+            if (folder is not null) await Launcher.LaunchFolderPathAsync(folder);
+        }
+        catch (Exception ex) { if (!closed) viewModel.ReportError("The output folder could not be opened.", ex); }
     }
 }
