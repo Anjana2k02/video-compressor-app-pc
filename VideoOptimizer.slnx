@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/VideoOptimizer.App/VideoOptimizer.App.csproj" />
+    <Project Path="src/VideoOptimizer.Core/VideoOptimizer.Core.csproj" />
+    <Project Path="src/VideoOptimizer.Media/VideoOptimizer.Media.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/VideoOptimizer.Tests/VideoOptimizer.Tests.csproj" />
+  </Folder>
+</Solution>

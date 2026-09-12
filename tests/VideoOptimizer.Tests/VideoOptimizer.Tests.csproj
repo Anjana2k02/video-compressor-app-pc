@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4"><PrivateAssets>all</PrivateAssets></PackageReference>
+    <ProjectReference Include="../../src/VideoOptimizer.Core/VideoOptimizer.Core.csproj" />
+    <ProjectReference Include="../../src/VideoOptimizer.Media/VideoOptimizer.Media.csproj" />
+    <Compile Include="../../src/VideoOptimizer.App/ViewModels/MainViewModel.cs" Link="ViewModels/MainViewModel.cs" />
+    <None Update="Fixtures/*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
